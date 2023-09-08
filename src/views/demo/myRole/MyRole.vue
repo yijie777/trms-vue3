@@ -1,18 +1,18 @@
 <template>
   <div class="p-2">
-    <BasicTable @register="registerTable">
-      <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus" @click="onAdd">新增</a-button>
-      </template>
-      <template #action="{record}">
-        <TableAction :actions="getTableActions(record)"></TableAction>
-      </template>
-    </BasicTable>
-    <RoleModal @register="registerModal" @success="onSuccess"></RoleModal>
-  </div>
-  <a-button @click="createContainer" size="large">创建docker容器</a-button>
-  <Terminal></Terminal>
+    <!--    <BasicTable @register="registerTable">-->
+    <!--      <template #tableTitle>-->
+    <!--        <a-button type="primary" preIcon="ant-design:plus" @click="onAdd">新增</a-button>-->
+    <!--      </template>-->
+    <!--      <template #action="{record}">-->
+    <!--        <TableAction :actions="getTableActions(record)"></TableAction>-->
+    <!--      </template>-->
+    <!--    </BasicTable>-->
+    <!--    <RoleModal @register="registerModal" @success="onSuccess"></RoleModal>-->
 
+    <a-button @click="createContainer" size="large">创建docker容器</a-button>
+    <Terminal :sshInfo="sshInfo"></Terminal>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,12 +23,22 @@ import {dockerCreate, list} from "@/views/demo/myRole/role.api";
 import RoleModal from "@/views/demo/myRole/RoleModal.vue";
 import {useModal} from "@/components/Modal";
 import Terminal from "@/views/demo/myRole/Terminal.vue";
+import {ref} from 'vue';
 
 export default {
   name: 'MyRole',
   computed: {},
   components: {Terminal, BasicTable, RoleModal, TableAction},
   setup() {
+    const sshInfo = ref({
+      operate: 'connect',
+      host: '101.35.193.165',
+      port: 55555,
+      username: 'root',
+      password: '123456',
+      userId: 1024
+    })
+
     const {tableContext} = useListPage({
       tableProps: {
         api: list,
@@ -56,9 +66,9 @@ export default {
       openModal(true, {isUpdate: true, record})
     }
 
-    async  function createContainer() {
+    async function createContainer() {
       console.log(123)
-     await dockerCreate(320)
+      await dockerCreate(320)
     }
 
     function onSuccess() {
@@ -81,6 +91,7 @@ export default {
       createContainer,
       onSuccess,
       getTableActions,
+      sshInfo,
     }
   },
 

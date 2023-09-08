@@ -23,6 +23,7 @@ export default {
   mounted() {
     this.initSocket()
   },
+  props:['sshInfo'],
   methods: {
     initXterm() {
       let _this = this
@@ -80,8 +81,10 @@ export default {
         this.sendShell(key)
       })
     },
-
     initSocket() {
+
+
+
 
       let _this = this
       // 建立连接对象
@@ -140,14 +143,8 @@ export default {
     },
     // 连接建立，首次发送消息连接 ssh
     sentFirst () {
-      let _bar = {
-        operate:'connect',
-        host: '192.168.160.100',
-        port: 11022,
-        username: 'root',
-        password: '123456',
-        userId: 1024
-      }
+
+      let _bar = this.sshInfo
       this.stompClient.send('/msg', {}, JSON.stringify(_bar))
     }
   }
