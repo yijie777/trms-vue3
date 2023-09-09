@@ -61,7 +61,7 @@
     },
     setup() {
       const state = reactive({
-        server: 'ws://localhost:3300/test',
+        server: 'ws://localhost:8080/jeecg-boot/websocket/e9ca23d68d884d4ebb19d07889727dae_5bc7d98babcff8444dc317b915ce87be',
         sendValue: '',
         recordList: [] as { id: number; time: number; res: string }[],
       });

@@ -1,27 +1,31 @@
 <template>
-  <div id="terminal" ref="terminal"></div>
+  <div id="terminal" ref="terminal" style="height: 100%"></div>
 </template>
 <script>
 import { Terminal } from "xterm"
 import { FitAddon } from 'xterm-addon-fit'
 import "xterm/css/xterm.css"
-import {store} from '@/store/'
 import Stomp from 'stompjs'
-import {getToken} from "@/utils/auth";
-import md5 from "crypto-js/md5";
-import {unref} from "vue";
-import {useUserStore} from "@/store/modules/user";
+import {getUserData} from "@/views/system/usersetting/UserSetting.api";
 export default {
   data() {
     return {
       term: "", // 保存terminal实例
-      rows: 40,
+      rows: 10,
       cols: 100,
       stompClient: ''
     }
   },
   mounted() {
-    this.initSocket()
+    getUserData().then((  res => {
+      if (res.success) {
+        if (res.result) {
+          this.sshInfo.userId=res.result.id
+          this.initSocket()
+        }
+      }
+    }))
+
   },
   props:['sshInfo'],
   methods: {
@@ -82,33 +86,13 @@ export default {
       })
     },
     initSocket() {
-
-
-
-
       let _this = this
       // 建立连接对象
-
-      let sockUrl = 'ws://localhost:8080/jeecg-boot/web-terminal'
+      let sockUrl = window._CONFIG['domianURL'].replace("https://","ws://").replace("http://","ws://")+"/web-terminal?"+this.sshInfo.userId
+      // let sockUrl = 'ws://localhost:8080/jeecg-boot/web-terminal?1024'
       let socket = new WebSocket(sockUrl)
-      // var url = window._CONFIG['domianURL'].replace("https://","ws://").replace("http://","ws://")+"/web-terminal"
       // var url = window._CONFIG['domianURL'].replace("https://","ws://").replace("http://","ws://")+"/websocket/e9ca23d68d884d4ebb19d07889727dae_597a1e98c4c81120b00a9633b05d5043"
-      // let socket = new WebSocket(url);
-      // let token = getToken();
-      //将登录token生成一个短的标识
-      // let wsClientId = md5(token);
-      // const userStore = useUserStore();
-      // let userId = unref(userStore.getUserInfo).id + "_" + wsClientId;
-      // console.log(userId)
-// 监听连接事件
-//       socket.addEventListener('open', function(event) {
-//         console.log("Connected to server");
-//       });
 
-// 监听消息事件
-//       socket.addEventListener('message', function(event) {
-//         console.log('Message from server ', event);
-//       });
 
       // 获取STOMP子协议的客户端对象
       _this.stompClient = Stomp.over(socket)
@@ -116,13 +100,10 @@ export default {
       // 向服务器发起websocket连接
       this.stompClient.connect({}, (res) => {
         _this.initXterm()
-        console.log("start subscribe")
-        _this.stompClient.subscribe('/topic/1024', (frame) => {
+        _this.stompClient.subscribe('/topic/'+this.sshInfo.userId, (frame) => {
           _this.writeShell(frame.body)
         })
-        console.log("start sentFirst")
         _this.sentFirst()
-        console.log("end sentFirst")
       }, (err) => {
         console.log('失败：' + err)
       })
@@ -134,7 +115,7 @@ export default {
       let _bar = {
         operate:'command',
         command: data,
-        userId: 1024
+        userId: this.sshInfo.userId
       }
       this.stompClient.send('/msg', {}, JSON.stringify(_bar))
     },
@@ -143,7 +124,7 @@ export default {
     },
     // 连接建立，首次发送消息连接 ssh
     sentFirst () {
-
+      this.sshInfo.operate="connect"
       let _bar = this.sshInfo
       this.stompClient.send('/msg', {}, JSON.stringify(_bar))
     }
