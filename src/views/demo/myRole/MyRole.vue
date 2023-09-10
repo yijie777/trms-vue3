@@ -30,7 +30,7 @@
 <script lang="ts">
 
 
-import {createHA, test1, test2, trmsStudentCourseList} from "@/views/demo/myRole/role.api";
+import {createHA, test1, test2} from "@/views/demo/myRole/role.api";
 
 import Terminal from "@/views/demo/myRole/Terminal.vue";
 import {ref} from 'vue';

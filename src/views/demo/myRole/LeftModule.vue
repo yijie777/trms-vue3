@@ -36,9 +36,17 @@
     <a-layout-content style="padding: 0 50px">
       <div :style="{ background: '#fff', padding: '24px', minHeight: '900px' }"
       >
-        <ServerInfo ></ServerInfo>
-        <ServerInfo ></ServerInfo>
-        <ServerInfo ></ServerInfo>
+        <ServerInfo v-for='containerInfo in containerList'
+                    :key='containerInfo.id'
+                    :title="containerInfo.hostname">
+          <template v-slot:main>
+            <div>
+              <a-button @click="startContainer(containerInfo)">启动</a-button>
+
+             {{containerInfo.portBindings}}
+            </div>
+          </template>
+        </ServerInfo>
       </div>
     </a-layout-content>
   </div>
@@ -52,6 +60,7 @@ import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons
 import ServerInfo from "@/views/demo/myRole/ServerInfo.vue";
 import {trmsStudentCourseList} from "@/views/demo/myRole/role.api";
 
+
 interface ContainerInfo {
   host: string | undefined;
   hostname: string | undefined;
@@ -60,11 +69,9 @@ interface ContainerInfo {
   port: string | undefined;
   status: string | undefined;
   username: string | undefined
+  portBindings: object
 }
 
-interface ContainerList {
-  [index: number]: Array<ContainerInfo>
-}
 
 export default defineComponent({
   components: {
@@ -76,6 +83,7 @@ export default defineComponent({
   data() {
     return {
       current: ['mail'],
+      containerList: Array<ContainerInfo>()
     }
   },
   props: {
@@ -85,19 +93,19 @@ export default defineComponent({
     stu_id: {
       type: String,
     },
-    containerList: {
-      // type: Object as Array[ContainerInfo]
-    }
+
   },
   mounted() {
     this.init()
   },
   methods: {
+    startContainer(containerInfo){
+
+    },
     select(e) {
       console.log(e)
     },
     init() {
-      console.log(this.containerList)
       trmsStudentCourseList({course_id: this.course_id, studentId: this.stu_id}).then((res => {
         for (const recordsKey in res.records[0].docker) {
           // console.log(res.records[0].docker[recordsKey])
@@ -112,16 +120,17 @@ export default defineComponent({
             }
 
           }
-          // this.containerList.push({
-          //   host: '192.168.160.100',
-          //   username: 'root',
-          //   password: '123456',
-          //   id: this.stu_id,
-          //   port: public_22,
-          //   hostname: res.records[0].docker[recordsKey].Config.Hostname,
-          //   status: res.records[0].docker[recordsKey].State.Status,
-          //   portBindings: portBind
-          // })
+
+          this.containerList.push({
+            host: '192.168.160.100',
+            username: 'root',
+            password: '123456',
+            id: this.stu_id,
+            port: public_22,
+            hostname: res.records[0].docker[recordsKey].Config.Hostname,
+            status: res.records[0].docker[recordsKey].State.Status,
+            portBindings: portBind
+          })
         }
         console.log(this.containerList)
       }))

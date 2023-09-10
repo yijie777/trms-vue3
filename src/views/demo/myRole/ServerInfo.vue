@@ -12,7 +12,7 @@
       :class="isExpand ? 'expand-contentexpand' : 'expand-content'"
       :style="isExpand ? 'height:' + height + 'px' : ''"
     >
-      <slot></slot>
+      <slot  name="main"></slot>
     </div>
   </div>
 
