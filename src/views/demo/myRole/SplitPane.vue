@@ -124,7 +124,7 @@ export default {
   background: palevioletred;
 }
 .split-pane .pane-trigger {
-  background: palegoldenrod;
+  background: #100e0e;
 }
 .split-pane .pane-two {
   flex: 1;

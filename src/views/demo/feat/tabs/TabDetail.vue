@@ -9,7 +9,6 @@
   import { PageWrapper } from '/@/components/Page';
   import { useTabs } from '/@/hooks/web/useTabs';
   import { useRoute } from 'vue-router';
-
   export default defineComponent({
     name: 'TabDetail',
     components: { PageWrapper },

@@ -1,5 +1,5 @@
 <template>
-  <div id="terminal" ref="terminal" style="height: 100%"></div>
+  <div id="terminal" ref="terminal"></div>
 </template>
 <script>
 import { Terminal } from "xterm"
@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       term: "", // 保存terminal实例
-      rows: 10,
+      rows: 50,
       cols: 100,
       stompClient: ''
     }
@@ -25,9 +25,10 @@ export default {
         }
       }
     }))
-
+    // this.sshInfo=this.containerList[0]
+    // this.initSocket()
   },
-  props:['sshInfo'],
+  props:['sshInfo','containerList'],
   methods: {
     initXterm() {
       let _this = this

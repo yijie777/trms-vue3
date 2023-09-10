@@ -1,0 +1,136 @@
+<template>
+  <div>
+
+    <a-layout-header>
+      <a-menu v-model:selectedKeys="current" mode="horizontal" theme="dark"
+              @select="select"
+      >
+
+        <a-menu-item key="DocOP">
+          <template #icon>
+            <mail-outlined/>
+          </template>
+          文档操作
+        </a-menu-item>
+        <a-menu-item key="FastOrder">
+          <template #icon>
+            <appstore-outlined/>
+          </template>
+          快捷指令
+        </a-menu-item>
+
+        <a-menu-item key="ServerInfo">
+          <template #icon>
+            <appstore-outlined/>
+          </template>
+          服务器信息
+        </a-menu-item>
+        <a-menu-item key="Submit">
+          <template #icon>
+            <appstore-outlined/>
+          </template>
+          在线提交
+        </a-menu-item>
+      </a-menu>
+    </a-layout-header>
+    <a-layout-content style="padding: 0 50px">
+      <div :style="{ background: '#fff', padding: '24px', minHeight: '900px' }"
+      >
+        <ServerInfo ></ServerInfo>
+        <ServerInfo ></ServerInfo>
+        <ServerInfo ></ServerInfo>
+      </div>
+    </a-layout-content>
+  </div>
+
+
+</template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons-vue';
+import ServerInfo from "@/views/demo/myRole/ServerInfo.vue";
+import {trmsStudentCourseList} from "@/views/demo/myRole/role.api";
+
+interface ContainerInfo {
+  host: string | undefined;
+  hostname: string | undefined;
+  id: string | undefined;
+  password: string | undefined;
+  port: string | undefined;
+  status: string | undefined;
+  username: string | undefined
+}
+
+interface ContainerList {
+  [index: number]: Array<ContainerInfo>
+}
+
+export default defineComponent({
+  components: {
+    ServerInfo,
+    MailOutlined,
+    AppstoreOutlined,
+    SettingOutlined,
+  },
+  data() {
+    return {
+      current: ['mail'],
+    }
+  },
+  props: {
+    course_id: {
+      type: String,
+    },
+    stu_id: {
+      type: String,
+    },
+    containerList: {
+      // type: Object as Array[ContainerInfo]
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    select(e) {
+      console.log(e)
+    },
+    init() {
+      console.log(this.containerList)
+      trmsStudentCourseList({course_id: this.course_id, studentId: this.stu_id}).then((res => {
+        for (const recordsKey in res.records[0].docker) {
+          // console.log(res.records[0].docker[recordsKey])
+          let portBind = {}
+          let public_22 = "22"
+          let portBinds = res.records[0].docker[recordsKey].HostConfig.PortBindings
+          for (var key in portBinds) {
+            let port = key.replaceAll("/tcp", "")
+            portBind[port] = portBinds[key][0]['HostPort']
+            if (port === '22') {
+              public_22 = portBinds[key][0]['HostPort']
+            }
+
+          }
+          // this.containerList.push({
+          //   host: '192.168.160.100',
+          //   username: 'root',
+          //   password: '123456',
+          //   id: this.stu_id,
+          //   port: public_22,
+          //   hostname: res.records[0].docker[recordsKey].Config.Hostname,
+          //   status: res.records[0].docker[recordsKey].State.Status,
+          //   portBindings: portBind
+          // })
+        }
+        console.log(this.containerList)
+      }))
+    }
+  },
+
+});
+</script>
+
+<style scoped>
+
+</style>
