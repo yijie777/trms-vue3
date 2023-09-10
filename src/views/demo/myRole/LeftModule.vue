@@ -34,21 +34,22 @@
       </a-menu>
     </a-layout-header>
     <a-layout-content style="padding: 0 50px">
+      <div v-if="key==='FastOrder'">
+        <a-button @click="createContainer" size="large" disabled>创建HA</a-button>
+        <a-button @click="oneClickDeployment" size="large">一键启动HA</a-button>
+        <a-button @click="automaticCorrection" size="large">检验组件是否启动</a-button>
+        <a-button @click="reconnect" size="large">重连</a-button>
 
-      <a-button @click="createContainer" size="large">创建docker容器</a-button>
-      <a-button @click="t1" size="large">一键启动HA</a-button>
-      <a-button @click="t2" size="large">检测Master</a-button>
-      <a-button @click="t3" size="large">重连</a-button>
+      </div>
 
       <div :style="{ background: '#fff', padding: '24px', minHeight: '900px' }"
-      >
+           v-if="key==='ServerInfo'">
         <ServerInfo v-for='containerInfo in containerList'
                     :key='containerInfo.id'
-                    :title="containerInfo.hostname">
+                    :title="containerInfo.hostname+'   '+containerInfo.lan">
           <template v-slot:main>
             <div>
               <a-button @click="startContainer(containerInfo)">启动</a-button>
-
               {{ containerInfo.portBindings }}
             </div>
           </template>
@@ -64,19 +65,24 @@
 import {defineComponent} from 'vue';
 import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons-vue';
 import ServerInfo from "@/views/demo/myRole/ServerInfo.vue";
-import {createHA, test1, test2, trmsStudentCourseList} from "@/views/demo/myRole/role.api";
+import {
+  createHA,
+  oneClickDeployment,
+  automaticCorrection,
+  trmsStudentCourseList
+} from "@/views/demo/myRole/role.api";
 import {useContainerStore} from '@/store/modules/containers'
-import {ref} from "vue/dist/vue";
 
 interface ContainerInfo {
-  host: string ;
-  hostname: string ;
-  id: string ;
-  password: string ;
-  port: string ;
-  status: string ;
+  host: string;
+  hostname: string;
+  id: string;
+  password: string;
+  port: string;
+  status: string;
   username: string
-  portBindings: object
+  portBindings: object,
+  lan:string
 }
 
 export default defineComponent({
@@ -89,15 +95,17 @@ export default defineComponent({
   },
   data() {
     return {
-      current: ['mail'],
+      current: ['ServerInfo'],
       containerList: Array<ContainerInfo>(),
-      sshInfo:  {
+      sshInfo: {
         host: "",
-        password:"132456",
-        username:"root",
-        operate:"connect",
-        port:"22",
-      }
+        password: "123456",
+        username: "root",
+        operate: "connect",
+        port: "22",
+
+      },
+      key: "ServerInfo"
     }
   },
   props: {
@@ -122,22 +130,21 @@ export default defineComponent({
       })
     },
 
-    t1() {
+    oneClickDeployment() {
       this.sshInfo.operate = "START_HA"
       console.log(this.sshInfo)
-      test1(this.sshInfo)
+      oneClickDeployment(this.sshInfo)
     },
 
-    t2() {
+    automaticCorrection() {
       this.sshInfo.operate = "CHECK_HA_MASTER"
-      test2(this.sshInfo)
+      automaticCorrection(this.sshInfo)
     },
 
-    t3() {
+    reconnect() {
 
     },
     startContainer(containerInfo) {
-      console.log(containerInfo)
       let useContainerStore1 = useContainerStore();
       useContainerStore1.setHost(containerInfo.host)
       useContainerStore1.setPassword(containerInfo.password)
@@ -148,7 +155,7 @@ export default defineComponent({
       this.$emit('initTerminal');
     },
     select(e) {
-      console.log(e)
+      this.key = e.key
     },
     init() {
       trmsStudentCourseList({course_id: this.course_id, studentId: this.stu_id}).then((res => {
@@ -173,13 +180,14 @@ export default defineComponent({
             port: public_22,
             hostname: res.records[0].docker[recordsKey].Config.Hostname,
             status: res.records[0].docker[recordsKey].State.Status,
-            portBindings: portBind
+            portBindings: portBind,
+            lan: res.records[0].docker[recordsKey].NetworkSettings.Networks[res.records[0].docker[recordsKey].HostConfig.NetworkMode].IPAddress
           })
         }
-        this.sshInfo.host=this.containerList[0].host
-        this.sshInfo.username=this.containerList[0].username
-        this.sshInfo.password=this.containerList[0].password
-        this.sshInfo.port=this.containerList[0].port
+        this.sshInfo.host = this.containerList[0].host
+        this.sshInfo.username = this.containerList[0].username
+        this.sshInfo.password = this.containerList[0].password
+        this.sshInfo.port = this.containerList[0].port
       }))
     }
   },

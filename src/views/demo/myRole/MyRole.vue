@@ -51,12 +51,11 @@ export default {
     //   userId: 1024
     // })
     /**
-     * 接受参数
+     * 接收参数
      */
     const stu_id = ref("e9ca23d68d884d4ebb19d07889727dae")
     const course_id = ref("1700053976482844673")
 
-    console.log("end")
 
     const paneLengthPercent = 30
 

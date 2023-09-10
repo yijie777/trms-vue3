@@ -44,7 +44,6 @@ export default {
       this.restart=!this.restart
       if(this.stompClient)this.stompClient.disconnect()
       this.initSocket();
-
     },
     update() {
       let useContainerStore1 = useContainerStore();
@@ -52,7 +51,6 @@ export default {
       this.sshInfo.username= useContainerStore1.getUsername
       this.sshInfo.host= useContainerStore1.getHost
       this.sshInfo.password= useContainerStore1.getPassword
-      console.log(this.sshInfo)
     },
     initXterm() {
       let _this = this

@@ -11,7 +11,8 @@ interface ContainerInfo {
   port: String;
   status: String;
   username: String
-  portBindings: Object
+  portBindings: Object,
+  lan:String
 }
 
 export const useContainerStore = defineStore({
@@ -24,7 +25,8 @@ export const useContainerStore = defineStore({
     port: "",
     status: "",
     username: "",
-    portBindings: {}
+    portBindings: {},
+    lan:""
   }),
 
   getters: {
@@ -52,6 +54,9 @@ export const useContainerStore = defineStore({
     getPortBindings(): Object {
       return this.portBindings;
     },
+    getLan(): Object {
+      return this.lan;
+    },
   },
   actions: {
 
@@ -78,6 +83,9 @@ export const useContainerStore = defineStore({
     },
     setPortBindings(params: String): void {
       this.portBindings = params;
+    },
+    setLan(params: String): void {
+      this.lan = params;
     },
   },
 

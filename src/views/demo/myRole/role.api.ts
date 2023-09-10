@@ -16,6 +16,6 @@ export const createHA = (params) => defHttp.post(({url: RoleApi.dockerCreate, pa
 export const add = (params) => defHttp.post(({url: RoleApi.save, params}))
 export const edit = (params) => defHttp.post(({url: RoleApi.edit, params}))
 
-export const test1 = (params) => defHttp.post(({url: RoleApi.test1, params}))
-export const test2 = (params) => defHttp.post(({url: RoleApi.test2, params}))
+export const oneClickDeployment = (params) => defHttp.post(({url: RoleApi.test1, params}))
+export const automaticCorrection = (params) => defHttp.post(({url: RoleApi.test2, params}))
 export const trmsStudentCourseList = (params) => defHttp.get(({url: RoleApi.trmsStudentCourseList, params}))
