@@ -1,5 +1,9 @@
 <template>
-  <div id="terminal" ref="terminal"></div>
+  <div>
+    <div id="terminal" ref="terminal" v-if="restart"></div>
+    <div id="terminal" ref="terminal" v-if="!restart"></div>
+  </div>
+
 </template>
 <script>
 import { Terminal } from "xterm"
@@ -7,29 +11,49 @@ import { FitAddon } from 'xterm-addon-fit'
 import "xterm/css/xterm.css"
 import Stomp from 'stompjs'
 import {getUserData} from "@/views/system/usersetting/UserSetting.api";
+import {useContainerStore} from '@/store/modules/containers'
+
 export default {
   data() {
     return {
       term: "", // 保存terminal实例
       rows: 50,
-      cols: 100,
-      stompClient: ''
+      cols: 50,
+      stompClient: '',
+      sshInfo: {},
+      restart:true
     }
+  },
+  components:{
+    useContainerStore
   },
   mounted() {
     getUserData().then((  res => {
       if (res.success) {
         if (res.result) {
           this.sshInfo.userId=res.result.id
-          this.initSocket()
+          // this.update()
+          // this.initSocket()
         }
       }
     }))
-    // this.sshInfo=this.containerList[0]
-    // this.initSocket()
   },
-  props:['sshInfo','containerList'],
   methods: {
+    init(){
+      this.update()
+      this.restart=!this.restart
+      if(this.stompClient)this.stompClient.disconnect()
+      this.initSocket();
+
+    },
+    update() {
+      let useContainerStore1 = useContainerStore();
+      this.sshInfo.port = useContainerStore1.getPort
+      this.sshInfo.username= useContainerStore1.getUsername
+      this.sshInfo.host= useContainerStore1.getHost
+      this.sshInfo.password= useContainerStore1.getPassword
+      console.log(this.sshInfo)
+    },
     initXterm() {
       let _this = this
       let term = new Terminal({
@@ -128,7 +152,8 @@ export default {
       this.sshInfo.operate="connect"
       let _bar = this.sshInfo
       this.stompClient.send('/msg', {}, JSON.stringify(_bar))
-    }
+    },
+
   }
 }
 </script>
