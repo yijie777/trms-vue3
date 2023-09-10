@@ -14,6 +14,7 @@ enum Api {
   getDictItems = '/sys/dict/getDictItems/',
   getTableList = '/sys/user/queryUserComponentData',
   getCategoryData = '/sys/category/loadAllData',
+  classList='/trms/trmsCourse/list'
 }
 
 /**
@@ -37,6 +38,9 @@ export const getUserList = (params) => {
   return defHttp.get({ url: Api.userList, params });
 };
 
+export const getClassList = (params) => {
+  return defHttp.get({ url: Api.classList, params });
+};
 /**
  * 角色列表
  * @param params

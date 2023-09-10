@@ -1,10 +1,10 @@
 <template>
   <div class="p-2">
 
-    <a-button @click="createContainer" size="large">创建docker容器</a-button>
-    <a-button @click="t1" size="large">一键启动HA</a-button>
-    <a-button @click="t2" size="large">检测Master</a-button>
-    <a-button @click="t3" size="large">重连</a-button>
+<!--    <a-button @click="createContainer" size="large">创建docker容器</a-button>-->
+<!--    <a-button @click="t1" size="large">一键启动HA</a-button>-->
+<!--    <a-button @click="t2" size="large">检测Master</a-button>-->
+<!--    <a-button @click="t3" size="large">重连</a-button>-->
 
     <div class="page">
       <SplitPane>
@@ -30,18 +30,21 @@
 <script lang="ts">
 
 
-import {createHA, test1, test2} from "@/views/demo/myRole/role.api";
+import {createHA, test1, test2, trmsStudentCourseList} from "@/views/demo/myRole/role.api";
 
 import Terminal from "@/views/demo/myRole/Terminal.vue";
-import {ref} from 'vue';
-import SplitPane from "@/views/demo/myRole/SplitPane.vue";
+import {ref,onMounted} from 'vue';
+// import Page from "@/views/demo/myRole/Page.vue";
+import {useRoute} from "vue-router";
 import LeftModule from "@/views/demo/myRole/LeftModule.vue";
+import SplitPane from "@/views/demo/myRole/SplitPane.vue";
 
 export default {
   name: 'MyRole',
   computed: {},
+
   components: {LeftModule, SplitPane, Terminal},
-  setup() {
+  setup: function () {
     // const sshInfo = ref({
     //   operate: 'connect',
     //   host: '101.35.193.165',
@@ -53,8 +56,8 @@ export default {
     /**
      * 接受参数
      */
-    const stu_id =ref("e9ca23d68d884d4ebb19d07889727dae")
-    const course_id =ref( "1700053976482844673")
+    const stu_id = ref("e9ca23d68d884d4ebb19d07889727dae")
+    const course_id = ref("1700053976482844673")
     let sshInfo = ref({
       operate: 'connect',
       host: '192.168.160.100',
@@ -93,6 +96,30 @@ export default {
 
     }
 
+    function onSuccess() {
+      reload()
+    }
+
+    function getTableActions(record): ActionItem[] {
+      return [
+        {
+          label: '编辑',
+          onClick: () => onEdit(record)
+        }
+      ]
+    }
+
+    const InitData = () => {
+      const route = useRoute();
+      const index = route.params;
+      console.log(index.className)
+      console.log(index.classid)
+
+    }
+    onMounted(() => {
+      InitData()
+    })
+
     return {
       createContainer,
       sshInfo,
@@ -111,7 +138,7 @@ export default {
 <style scoped>
 .page {
   height: 100%;
-  padding: 10px;
-  background: #000;
+  background: #ffffff;
+  margin: 0px;
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
+  <h2>卡片測試</h2>
   <div class="p-2">
+    <h2>卡片測試</h2>
     <div class="bg-white mb-2 p-4">
       <BasicForm @register="registerForm" />
     </div>

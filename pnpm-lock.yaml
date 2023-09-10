@@ -182,13 +182,13 @@ dependencies:
     version: registry.npmmirror.com/xss@1.0.14
   xterm:
     specifier: ^5.2.1
-    version: registry.npmmirror.com/xterm@5.2.1
+    version: registry.npmmirror.com/xterm@5.3.0
   xterm-addon-attach:
     specifier: ^0.8.0
-    version: registry.npmmirror.com/xterm-addon-attach@0.8.0(xterm@5.2.1)
+    version: registry.npmmirror.com/xterm-addon-attach@0.8.0(xterm@5.3.0)
   xterm-addon-fit:
     specifier: ^0.7.0
-    version: registry.npmmirror.com/xterm-addon-fit@0.7.0(xterm@5.2.1)
+    version: registry.npmmirror.com/xterm-addon-fit@0.7.0(xterm@5.3.0)
 
 devDependencies:
   '@commitlint/cli':
@@ -2424,7 +2424,7 @@ packages:
     resolution: {integrity: sha512-IqJ/jlbw5WJSNfwQ/lHEDXF8rxhRgF6ythk2oiEvhpG29F704eX9NO6TvPfMiq9DrbwgcEDnETYNcZDPewQoVw==}
     engines: {node: '>=6'}
     dependencies:
-      file-type: registry.npmmirror.com/file-type@10.11.0
+      file-type: 10.11.0
     dev: true
 
   /is-jpg@2.0.0:
@@ -11911,7 +11911,7 @@ packages:
       get-stream: registry.npmmirror.com/get-stream@4.1.0
       is-stream: registry.npmmirror.com/is-stream@1.1.0
       npm-run-path: registry.npmmirror.com/npm-run-path@2.0.2
-      p-finally: registry.npmmirror.com/p-finally@1.0.0
+      p-finally: 1.0.0
       signal-exit: registry.npmmirror.com/signal-exit@3.0.7
       strip-eof: 1.0.0
     dev: true
@@ -12156,13 +12156,6 @@ packages:
     engines: {node: ^10.12.0 || >=12.0.0}
     dependencies:
       flat-cache: registry.npmmirror.com/flat-cache@3.0.4
-    dev: true
-
-  registry.npmmirror.com/file-type@10.11.0:
-    resolution: {integrity: sha512-uzk64HRpUZyTGZtVuvrjP0FYxzQrBf4rojot6J65YMEbwBLB0CWm0CLojVpwpmFmxcE/lkvYICgfcGozbBq6rw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/file-type/-/file-type-10.11.0.tgz}
-    name: file-type
-    version: 10.11.0
-    engines: {node: '>=6'}
     dev: true
 
   registry.npmmirror.com/file-type@3.9.0:
@@ -19980,7 +19973,7 @@ packages:
     engines: {node: '>=0.4'}
     dev: true
 
-  registry.npmmirror.com/xterm-addon-attach@0.8.0(xterm@5.2.1):
+  registry.npmmirror.com/xterm-addon-attach@0.8.0(xterm@5.3.0):
     resolution: {integrity: sha512-k8N5boSYn6rMJTTNCgFpiSTZ26qnYJf3v/nJJYexNO2sdAHDN3m1ivVQWVZ8CHJKKnZQw1rc44YP2NtgalWHfQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/xterm-addon-attach/-/xterm-addon-attach-0.8.0.tgz}
     id: registry.npmmirror.com/xterm-addon-attach/0.8.0
     name: xterm-addon-attach
@@ -19988,10 +19981,10 @@ packages:
     peerDependencies:
       xterm: ^5.0.0
     dependencies:
-      xterm: registry.npmmirror.com/xterm@5.2.1
+      xterm: registry.npmmirror.com/xterm@5.3.0
     dev: false
 
-  registry.npmmirror.com/xterm-addon-fit@0.7.0(xterm@5.2.1):
+  registry.npmmirror.com/xterm-addon-fit@0.7.0(xterm@5.3.0):
     resolution: {integrity: sha512-tQgHGoHqRTgeROPnvmtEJywLKoC/V9eNs4bLLz7iyJr1aW/QFzRwfd3MGiJ6odJd9xEfxcW36/xRU47JkD5NKQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/xterm-addon-fit/-/xterm-addon-fit-0.7.0.tgz}
     id: registry.npmmirror.com/xterm-addon-fit/0.7.0
     name: xterm-addon-fit
@@ -19999,13 +19992,13 @@ packages:
     peerDependencies:
       xterm: ^5.0.0
     dependencies:
-      xterm: registry.npmmirror.com/xterm@5.2.1
+      xterm: registry.npmmirror.com/xterm@5.3.0
     dev: false
 
-  registry.npmmirror.com/xterm@5.2.1:
-    resolution: {integrity: sha512-cs5Y1fFevgcdoh2hJROMVIWwoBHD80P1fIP79gopLHJIE4kTzzblanoivxTiQ4+92YM9IxS36H1q0MxIJXQBcA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/xterm/-/xterm-5.2.1.tgz}
+  registry.npmmirror.com/xterm@5.3.0:
+    resolution: {integrity: sha512-8QqjlekLUFTrU6x7xck1MsPzPA571K5zNqWm0M0oroYEWVOptZ0+ubQSkQ3uxIEhcIHRujJy6emDWX4A7qyFzg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/xterm/-/xterm-5.3.0.tgz}
     name: xterm
-    version: 5.2.1
+    version: 5.3.0
     dev: false
 
   registry.npmmirror.com/y18n@4.0.3:

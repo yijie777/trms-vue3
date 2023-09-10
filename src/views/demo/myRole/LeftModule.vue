@@ -1,9 +1,8 @@
 <template>
-  <div>
-
-    <a-layout-header>
-      <a-menu v-model:selectedKeys="current" mode="horizontal" theme="dark"
-              @select="select"
+  <div style="margin: 0px;padding: 0px">
+    <a-layout-header style="margin: 0px;padding: 0px">
+      <a-menu v-model:selectedKeys="current" mode="horizontal" theme="light"
+              @select="select" style="height: 50px;width: 100%;"
       >
 
         <a-menu-item key="DocOP">
@@ -33,8 +32,8 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header>
-    <a-layout-content style="padding: 0 50px">
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '900px' }"
+    <a-layout-content style="padding: 0 3px;">
+      <div :style="{ background: '#fff', minHeight: '900px' }"
       >
         <ServerInfo v-for='containerInfo in containerList'
                     :key='containerInfo.id'

@@ -10,7 +10,7 @@
       @mousedown="handleMouseDown"
     ></div>
 
-    <div class="pane pane-two">
+    <div class="pane pane-two" style="margin: 0px">
       <slot name="two" ></slot>
     </div>
   </div>
@@ -124,7 +124,7 @@ export default {
   background: palevioletred;
 }
 .split-pane .pane-trigger {
-  background: #100e0e;
+  background: #ff0000;
 }
 .split-pane .pane-two {
   flex: 1;
