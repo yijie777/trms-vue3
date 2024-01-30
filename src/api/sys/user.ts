@@ -15,6 +15,7 @@ enum Api {
   phoneLogin = '/sys/phoneLogin',
   Logout = '/sys/logout',
   GetUserInfo = '/sys/user/getUserInfo',
+  GetUserRole='/sys/role/queryById',
   // 获取系统权限
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
@@ -90,7 +91,19 @@ export function getUserInfo() {
     // update-end--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
   });
 }
-
+export function getUserRole(id) {
+  return defHttp.get<Object>({ url: Api.GetUserRole+"?id="+id }, {}).catch((e) => {
+    // update-begin--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
+    if (e && (e.message.includes('timeout') || e.message.includes('401'))) {
+      //接口不通时跳转到登录界面
+      const userStore = useUserStoreWithOut();
+      userStore.setToken('');
+      setAuthCache(TOKEN_KEY, null);
+      router.push(PageEnum.BASE_LOGIN);
+    }
+    // update-end--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
+  });
+}
 export function getPermCode() {
   return defHttp.get({ url: Api.GetPermCode });
 }

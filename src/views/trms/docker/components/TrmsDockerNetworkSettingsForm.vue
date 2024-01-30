@@ -4,7 +4,7 @@
 <script lang="ts">
     import {defineComponent} from 'vue';
     import {BasicForm, useForm} from '/@/components/Form/index';
-    import {trmsDockerNetworkSettingsFormSchema} from '../TrmsDockerContainer.data';
+    import {formSchema} from '../TrmsDockerContainer.data';
     import {defHttp} from '/@/utils/http/axios';
     import { VALIDATE_FAILED } from '/@/utils/common/vxeUtils'
 
@@ -21,7 +21,7 @@
         setup(props,{emit}) {
             const [registerForm, {setProps, resetFields, setFieldsValue,getFieldsValue,validate}] = useForm({
                 //labelWidth: 150,
-                schemas: trmsDockerNetworkSettingsFormSchema,
+                schemas: formSchema,
                 showActionButtonGroup: false,
                 baseColProps: {span: 24}
             });

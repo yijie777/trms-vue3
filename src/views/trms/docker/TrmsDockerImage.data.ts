@@ -4,65 +4,50 @@ import { rules} from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 //列表数据
 export const columns: BasicColumn[] = [
-   {
+  {
     title: '创建时间',
     align:"center",
+    sorter: true,
     dataIndex: 'createTime'
-   },
-   {
+  },
+  {
     title: '标签',
     align:"center",
+    sorter: true,
     dataIndex: 'repotags'
-   },
-   {
+  },
+  {
     title: '大小',
     align:"center",
-    dataIndex: 'size'
-   },
-   {
-    title: '哈希值',
-    align:"center",
-    dataIndex: 'id64'
-   },
+    sorter: true,
+    dataIndex: 'size',
+    format: (text) => {
+      // 将字节转换为 GB，保留两位小数
+      const sizeInGB = text / (1024 * 1024 * 1024);
+      return sizeInGB.toFixed(2) + ' GB';
+    }
+  },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
+  {
+    label: "标签",
+    field: 'repotags',
+    component: 'Input',
+    colProps: {span: 6},
+  },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
+
   {
-    label: '创建时间',
-    field: 'createTime',
-    component: 'DatePicker',
-    componentProps: {
-       showTime: true,
-       valueFormat: 'YYYY-MM-DD HH:mm:ss'
-     },
-  },
-  {
-    label: '标签',
+    label: '自动同步Docker',
     field: 'repotags',
     component: 'Input',
+    dynamicDisabled:true
   },
-  {
-    label: '大小',
-    field: 'size',
-    component: 'InputNumber',
-  },
-  {
-    label: '哈希值',
-    field: 'id64',
-    component: 'Input',
-  },
-	// TODO 主键隐藏字段，目前写死为ID
-	{
-	  label: '',
-	  field: 'id',
-	  component: 'Input',
-	  show: false
-	},
-];
 
+];
 
 
 /**

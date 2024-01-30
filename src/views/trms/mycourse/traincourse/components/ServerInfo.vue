@@ -3,6 +3,7 @@
     <div class="expand-header">
       <div class="expand-header-title">{{ title }}</div>
       <!-- ant-Design 的图标 -->
+      <slot  name="title"></slot>
       <DownCircleOutlined
         :class="isExpand ? 'expand-header-iconexpand' : 'expand-header-icon'"
         @click="isExpand = !isExpand"
@@ -12,7 +13,7 @@
       :class="isExpand ? 'expand-contentexpand' : 'expand-content'"
       :style="isExpand ? 'height:' + height + 'px' : ''"
     >
-      <slot  name="main"></slot>
+      <slot name="main"></slot>
     </div>
   </div>
 
@@ -48,7 +49,7 @@ export default defineComponent({
   },
   data() {
     return {
-      isExpand: true
+      isExpand: false
     }
   },
   mounted() {
@@ -61,14 +62,14 @@ export default defineComponent({
 </script>
 <style scoped>
 .expand {
-  border: 1px solid #eeeeee;
+  border: 1px solid #9a9a9a;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .expand .expand-header {
-  height: 40px;
+  height: 70px;
   padding: 0 15px;
-  background: #eeeeee;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -94,6 +95,7 @@ export default defineComponent({
 .expand .expand-contentexpand {
   transition: all 0.5s;
   overflow: hidden;
+  background-image: url('/src/assets/trms/bk.png');
 }
 
 .expand .expand-content {

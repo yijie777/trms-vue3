@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/trms/trmsDockerImage/deleteBatch',
   importExcel = '/trms/trmsDockerImage/importExcel',
   exportXls = '/trms/trmsDockerImage/exportXls',
+  sync = '/trms/trmsDockerImage/sync',
 }
 /**
  * 导出api
@@ -61,4 +62,9 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({url: url, params});
+}
+export const syncImages = (handleSuccess) => {
+  return defHttp.get({url: Api.sync}).then(() => {
+    handleSuccess();
+  });
 }

@@ -72,6 +72,7 @@
   }
 
   function setDisabled(flag) {
+    console.log(uploadModalValue.value)
     setProps({ disabled: !!flag });
   }
 

@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       term: "", // 保存terminal实例
-      rows: 50,
+      rows: 52,
       cols: 50,
       stompClient: '',
       sshInfo: {},
@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     init(){
+      console.log(this.sshInfo)
       this.update()
       this.restart=!this.restart
       if(this.stompClient)this.stompClient.disconnect()
@@ -98,8 +99,9 @@ export default {
       if (term._initialized) return
       // 初始化
       term._initialized = true
-      term.writeln("Welcome to \x1b[1;32m docker container\x1b[0m.")
-      term.writeln('This is Web Terminal of Modb; Good Good Study, Day Day Up.')
+      term.writeln('Welcome to \x1b[1;32m '+this.sshInfo.host+':'+this.sshInfo.port+' \x1b[0m')
+      term.writeln('Web terminal loading completed; Good Good Study, Day Day Up.')
+      term.writeln('\x1b \x1b[0m')
       // term.prompt()
       // term.prompt = () => {
       //   term.write("\r\n$ ");
@@ -111,6 +113,7 @@ export default {
     initSocket() {
       let _this = this
       // 建立连接对象
+
       let sockUrl = window._CONFIG['domianURL'].replace("https://","ws://").replace("http://","ws://")+"/web-terminal?"+this.sshInfo.userId
       // let sockUrl = 'ws://localhost:8080/jeecg-boot/web-terminal?1024'
       let socket = new WebSocket(sockUrl)

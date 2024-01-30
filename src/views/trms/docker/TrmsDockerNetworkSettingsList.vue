@@ -46,7 +46,7 @@
   import {useModal} from '/@/components/Modal';
   import TrmsDockerNetworkSettingsModal from './components/TrmsDockerNetworkSettingsModal.vue'
   import {trmsDockerNetworkSettingsColumns} from './TrmsDockerContainer.data';
-  import {trmsDockerNetworkSettingsList, trmsDockerNetworkSettingsDelete, trmsDockerNetworkSettingsDeleteBatch, trmsDockerNetworkSettingsExportXlsUrl, trmsDockerNetworkSettingsImportUrl } from './TrmsDockerContainer.api';
+  import {trmsDockerNetworkSettingsList, getExportUrl, getImportUrl, deleteOne, batchDelete } from './TrmsDockerContainer.api';
   import {isEmpty} from "/@/utils/is";
   import {useMessage} from '/@/hooks/web/useMessage';
   import {downloadFile} from '/@/utils/common/renderUtils';
@@ -76,14 +76,14 @@
         },
         exportConfig: {
             name: 'trms_docker_network_settings',
-            url: trmsDockerNetworkSettingsExportXlsUrl,
+            url: getExportUrl,
             params: {
                 'containerId': mainId
             }
         },
         importConfig: {
             url: ()=>{
-                return trmsDockerNetworkSettingsImportUrl + '/' + unref(mainId)
+                return getImportUrl + '/' + unref(mainId)
             }
         }
     });
@@ -126,14 +126,14 @@
      * 删除事件
      */
     async function handleDelete(record) {
-        await trmsDockerNetworkSettingsDelete({id: record.id}, handleSuccess);
+        await deleteOne({id: record.id}, handleSuccess);
     }
 
     /**
      * 批量删除事件
      */
     async function batchHandleDelete() {
-        await trmsDockerNetworkSettingsDeleteBatch({ids: selectedRowKeys.value}, handleSuccess)
+        await batchDelete({ids: selectedRowKeys.value}, handleSuccess)
     }
 
     /**

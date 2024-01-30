@@ -102,7 +102,7 @@ export default {
 
 <style scoped >
 .split-pane {
-  background: palegreen;
+  background: #ffffff;
   height: 100%;
   display: flex;
 }
@@ -121,14 +121,14 @@ export default {
   cursor: row-resize;
 }
 .split-pane .pane-one {
-  background: palevioletred;
+  background: #e8e8e8;
 }
 .split-pane .pane-trigger {
-  background: #100e0e;
+  background: #ddd;
 }
 .split-pane .pane-two {
   flex: 1;
-  background: turquoise;
+  background: #ffffff;
 }
 
 

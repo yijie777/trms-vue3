@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="滚动组件示例" content="基于el-scrollbar">
+<!--  <PageWrapper title="滚动组件示例" content="基于el-scrollbar">-->
     <div class="scroll-wrap">
       <ScrollContainer class="mt-4">
         <ul class="p-3">
@@ -11,11 +11,11 @@
         </ul>
       </ScrollContainer>
     </div>
-  </PageWrapper>
+<!--  </PageWrapper>-->
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { ScrollContainer } from '/@/components/Container/index';
+  import { ScrollContainer } from '@/components/Container';
   import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({

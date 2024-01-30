@@ -8,8 +8,8 @@
     import {ref, computed, unref,inject} from 'vue';
     import {BasicModal, useModalInner} from '/@/components/Modal';
     import {BasicForm, useForm} from '/@/components/Form/index';
-    import {trmsDockerNetworkSettingsFormSchema} from '../TrmsDockerContainer.data';
-    import {trmsDockerNetworkSettingsSaveOrUpdate} from '../TrmsDockerContainer.api';
+    import {formSchema} from '../TrmsDockerContainer.data';
+    import {saveOrUpdate} from '../TrmsDockerContainer.api';
 
     //接收主表id
     const mainId = inject('mainId');
@@ -19,7 +19,7 @@
     //表单配置
     const [registerForm, {setProps,resetFields, setFieldsValue, validate}] = useForm({
         //labelWidth: 150,
-        schemas: trmsDockerNetworkSettingsFormSchema,
+        schemas: formSchema,
         showActionButtonGroup: false,
         baseColProps: {span: 24}
     });
@@ -49,7 +49,7 @@
                 values['containerId'] = unref(mainId);
              }
             //提交表单
-            await trmsDockerNetworkSettingsSaveOrUpdate(values, isUpdate.value);
+            await saveOrUpdate(values, isUpdate.value);
             //关闭弹窗
             closeModal();
             //刷新列表

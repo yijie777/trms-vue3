@@ -46,7 +46,7 @@
   import {useModal} from '/@/components/Modal';
   import TrmsDockerContainerPortsModal from './components/TrmsDockerContainerPortsModal.vue'
   import {trmsDockerContainerPortsColumns} from './TrmsDockerContainer.data';
-  import {trmsDockerContainerPortsList, trmsDockerContainerPortsDelete, trmsDockerContainerPortsDeleteBatch, trmsDockerContainerPortsExportXlsUrl, trmsDockerContainerPortsImportUrl } from './TrmsDockerContainer.api';
+  import {trmsDockerContainerPortsList, deleteOne, batchDelete, getExportUrl, getImportUrl } from './TrmsDockerContainer.api';
   import {isEmpty} from "/@/utils/is";
   import {useMessage} from '/@/hooks/web/useMessage';
   import {downloadFile} from '/@/utils/common/renderUtils';
@@ -76,14 +76,14 @@
         },
         exportConfig: {
             name: 'trms_docker_container_ports',
-            url: trmsDockerContainerPortsExportXlsUrl,
+            url: getExportUrl,
             params: {
                 'containerId': mainId
             }
         },
         importConfig: {
             url: ()=>{
-                return trmsDockerContainerPortsImportUrl + '/' + unref(mainId)
+                return getImportUrl + '/' + unref(mainId)
             }
         }
     });
@@ -126,14 +126,14 @@
      * 删除事件
      */
     async function handleDelete(record) {
-        await trmsDockerContainerPortsDelete({id: record.id}, handleSuccess);
+        await deleteOne({id: record.id}, handleSuccess);
     }
 
     /**
      * 批量删除事件
      */
     async function batchHandleDelete() {
-        await trmsDockerContainerPortsDeleteBatch({ids: selectedRowKeys.value}, handleSuccess)
+        await batchDelete({ids: selectedRowKeys.value}, handleSuccess)
     }
 
     /**

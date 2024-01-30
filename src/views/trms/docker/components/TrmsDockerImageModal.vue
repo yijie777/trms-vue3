@@ -52,6 +52,7 @@
             setModalProps({confirmLoading: false});
         }
     }
+
 </script>
 
 <style lang="less" scoped>

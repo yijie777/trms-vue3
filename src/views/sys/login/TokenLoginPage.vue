@@ -5,7 +5,7 @@
             <div class="app-loading-dots">
                 <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
             </div>
-            <div class="app-loading-title">JeecgBoot 企业级低代码平台</div>
+            <div class="app-loading-title">大数据教学实训系统</div>
         </div>
     </div>
 </template>

@@ -1,73 +1,37 @@
 <template>
-  <div class="p-2">
-
-    <div class="page">
-      <SplitPane style="height: 1080px">
-        <template v-slot:one>
-          <div>
-            <LeftModule :course_id="course_id" :stu_id="stu_id" @initTerminal="initTerminal"></LeftModule>
-          </div>
-        </template>
-
-        <template v-slot:two>
-          <div style="height: 100%">
-            <!--            <Terminal :sshInfo="sshInfo"></Terminal>-->
-            <Terminal ref="child1Container"></Terminal>
-          </div>
-        </template>
-
-      </SplitPane>
-    </div>
-
-
+  <div>
+    <iframe src="https://192.168.160.100:6901/" id="mobsf" scrolling="no" frameborder="0" style="position:absolute;"></iframe>
   </div>
 </template>
 
 <script lang="ts">
 
 
-
-import Terminal from "@/views/demo/myRole/Terminal.vue";
-import {ref} from 'vue';
-import SplitPane from "@/views/demo/myRole/SplitPane.vue";
-import LeftModule from "@/views/demo/myRole/LeftModule.vue";
-
 export default {
-  name: 'MyRole',
-  computed: {},
-  components: {LeftModule, SplitPane, Terminal},
-  methods:{
-    initTerminal(){
-      this.$refs.child1Container.init();
-    }
-  },
-  setup() {
-    // const sshInfo = ref({
-    //   operate: 'connect',
-    //   host: '101.35.193.165',
-    //   port: 55555,
-    //   username: 'root',
-    //   password: '123456',
-    //   userId: 1024
-    // })
-    /**
-     * 接收参数
-     */
-    const stu_id = ref("e9ca23d68d884d4ebb19d07889727dae")
-    const course_id = ref("1700053976482844673")
-
-
-    const paneLengthPercent = 30
-
-
+  data () {
     return {
-      paneLengthPercent,
-      stu_id,
-      course_id
     }
   },
+  mounted(){
+    /**
+     * iframe-宽高自适应显示
+     */
+    function changeMobsfIframe(){
+      const mobsf = document.getElementById('mobsf');
+      const deviceWidth = document.body.clientWidth;
+      const deviceHeight = document.body.clientHeight;
+      mobsf.style.width = (Number(deviceWidth)-240) + 'px'; //数字是页面布局宽度差值
+      mobsf.style.height = (Number(deviceHeight)-100) + 'px'; //数字是页面布局高度差
+    }
 
-};
+    changeMobsfIframe()
+
+    window.onresize = function(){
+      changeMobsfIframe()
+    }
+  }
+}
+
 </script>
 
 <style scoped>
