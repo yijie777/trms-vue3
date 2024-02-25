@@ -35,16 +35,26 @@ export const searchFormSchema: FormSchema[] = [
     field: 'repotags',
     component: 'Input',
     colProps: {span: 6},
+    //模糊查询
+    componentProps: {
+      suffixIcon: 'SearchOutlined',
+    }
   },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
+  {
+    label: 'id',
+    field: 'id',
+    component: 'Input',
+    show:false,
+  },
 
   {
-    label: '自动同步Docker',
-    field: 'repotags',
+    label: '开放端口',
+    field: 'openPort',
     component: 'Input',
-    dynamicDisabled:true
+    helpMessage:'多个端口用逗号隔开',
   },
 
 ];

@@ -51,23 +51,33 @@ export const columns: BasicColumn[] = [
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
+  {
+    label: "课程名称",
+    field: "courseName",
+    component: 'Input', //TODO 范围查询
+    colProps: {span: 6},
+  },
 ];
+
 //表单数据
 export const formSchema: FormSchema[] = [
   {
     label: '课程名称',
     field: 'courseName',
     component: 'Input',
+    required: true,
   },
   {
     label: '授课教师',
     field: 'tearcherId',
     component: 'Input',
+    required: true,
   },
   {
     label: '课程描述',
     field: 'description',
     component: 'Input',
+    required: true,
   },
 
   {
@@ -84,23 +94,24 @@ export const formSchema: FormSchema[] = [
     componentProps:{
     },
   },
-  {
-    label: '封面',
-    field: 'imageUrl',
-    component: 'JImageUpload',
-    componentProps:{
-    },
-  },
-  {
-    label: '创建日期',
-    field: 'createTime',
-    component: 'DatePicker',
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss'
-    },
-    dynamicDisabled:true
-  },
+  // {
+  //   label: '封面',
+  //   field: 'imageUrl',
+  //   component: 'JImageUpload',
+  //   componentProps:{
+  //   },
+  //   required: true,
+  // },
+  // {
+  //   label: '创建日期',
+  //   field: 'createTime',
+  //   component: 'DatePicker',
+  //   componentProps: {
+  //     showTime: true,
+  //     valueFormat: 'YYYY-MM-DD HH:mm:ss'
+  //   },
+  //   dynamicDisabled:true
+  // },
   {
     label: '镜像组',
     field: 'imageGroup',
@@ -108,6 +119,7 @@ export const formSchema: FormSchema[] = [
     componentProps:{
       dictCode:"trms_docker_image,repotags,id"
     },
+    required: true,
   },
   // TODO 主键隐藏字段，目前写死为ID
   {

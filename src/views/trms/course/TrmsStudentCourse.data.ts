@@ -5,7 +5,7 @@ import { render } from '/@/utils/common/renderUtils';
 //列表数据
 export const columns: BasicColumn[] = [
   {
-    title: '课程ID',
+    title: '课程',
     align:"center",
     sorter: true,
     dataIndex: 'courseId_dictText'
@@ -31,13 +31,13 @@ export const columns: BasicColumn[] = [
 //查询数据
 export const searchFormSchema: FormSchema[] = [
   {
-    label: "学生ID",
+    label: "学生",
     field: 'studentId',
     component: 'Input',
     colProps: {span: 6},
   },
   {
-    label: "课程ID",
+    label: "课程",
     field: 'courseId',
     component: 'JDictSelectTag',
     componentProps:{
@@ -59,7 +59,7 @@ export const searchFormSchema: FormSchema[] = [
 //表单数据
 export const formSchema: FormSchema[] = [
   {
-    label: '小组ID',
+    label: '小组',
     field: 'groupId',
     defaultValue: "",
     component: 'JSelectMultiple',
@@ -73,7 +73,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '课程ID',
+    label: '课程',
     field: 'courseId',
     component: 'JDictSelectTag',
     componentProps:{

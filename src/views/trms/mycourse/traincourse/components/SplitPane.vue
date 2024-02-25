@@ -11,7 +11,7 @@
     ></div>
 
     <div class="pane pane-two">
-      <slot name="two" ></slot>
+      <slot name="two"></slot>
     </div>
   </div>
 </template>
@@ -19,20 +19,20 @@
 <script>
 export default {
   props: {
-      direction: {
-        type: String,
-        default: 'row'
-      },
+    direction: {
+      type: String,
+      default: 'row'
+    },
 
-      min: {
-        type: Number,
-        default: 10
-      },
+    min: {
+      type: Number,
+      default: 10
+    },
 
-      max: {
-        type: Number,
-        default: 90
-      }
+    max: {
+      type: Number,
+      default: 90
+    }
 
   },
   data() {
@@ -100,32 +100,39 @@ export default {
 }
 </script>
 
-<style scoped >
+<style scoped>
 .split-pane {
   background: #ffffff;
   height: 100%;
   display: flex;
 }
+
 .split-pane.row .pane {
   height: 100%;
 }
+
 .split-pane.row .pane-trigger {
   height: 100%;
   cursor: col-resize;
 }
+
 .split-pane.column .pane {
   width: 100%;
 }
+
 .split-pane.column .pane-trigger {
   width: 100%;
   cursor: row-resize;
 }
+
 .split-pane .pane-one {
   background: #e8e8e8;
 }
+
 .split-pane .pane-trigger {
   background: #ddd;
 }
+
 .split-pane .pane-two {
   flex: 1;
   background: #ffffff;

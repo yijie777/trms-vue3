@@ -27,6 +27,7 @@
           res[i].restPPT = 100 - parseInt(String((res[i].rest / res[i].max) * 100));
         }
         diskInfo.value = res;
+        console.log(res)
       })
       .finally(() => (spinning.value = false));
   }

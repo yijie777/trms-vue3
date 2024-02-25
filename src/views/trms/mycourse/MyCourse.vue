@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <PageWrapper title="我的实训" v-show="!chooseStudentCourse.id">
-      <a-space :size="[8, 18]" wrap style="margin: 5%" >
+      <a-space :size="[8, 18]" wrap style="margin: 5%">
         <template v-show="studentCourseList" v-model="studentCourseList"
                   v-for="sc in studentCourseList"
                   v-if="studentCourseList.length!==0">
@@ -20,7 +20,7 @@
             </a-card-meta>
             <div class="space-align-container">
               <a-space align="center">
-                <div class="space-align-block" >
+                <div class="space-align-block">
                   <a-button type="primary" @click="startTrain(sc)">
                     进入实训
                   </a-button>
@@ -37,13 +37,16 @@
         </template>
       </a-space>
     </PageWrapper>
-
+    <ScaleTransition  style="height: 100%">
       <TrainCourse :sc="chooseStudentCourse" v-if="chooseStudentCourse.id">
         <template v-slot:exit>
           <fullscreen-exit-outlined style="font-size: 30px;color: #7c7c7c"
                                     @click="exit"></fullscreen-exit-outlined>
         </template>
       </TrainCourse>
+    </ScaleTransition>
+
+
   </div>
 
 </template>
@@ -54,10 +57,9 @@ import {getFileAccessHttpUrl} from "@/utils/common/compUtils";
 import TrainCourse from "@/views/trms/mycourse/traincourse/TrainCourse.vue";
 import {FullscreenExitOutlined} from "@ant-design/icons-vue";
 import {PageWrapper} from "@/components/Page";
-import {useAppStore} from "@/store/modules/app";
 import {baseHandler} from "@/layouts/default/setting/handler";
 import {HandlerEnum} from "@/layouts/default/setting/enum";
-import {unref} from "vue";
+import {ScaleTransition} from "@/components/Transition";
 
 interface Course {
   courseName: string;
@@ -82,11 +84,11 @@ export default {
   data() {
     return {
       studentCourseList: Array<StudentCourse>(),
-      stu_id: "e9ca23d68d884d4ebb19d07889727dae",
+      stu_id: "",
       chooseStudentCourse: {}
     }
   },
-  components: {PageWrapper, FullscreenExitOutlined, TrainCourse},
+  components: {PageWrapper, FullscreenExitOutlined, TrainCourse,ScaleTransition },
   mounted() {
     list({studentId: this.stu_id}).then((res) => {
       for (const i in res.records) {
@@ -101,10 +103,12 @@ export default {
     getFileAccessHttpUrl,
     startTrain(course) {
       this.chooseStudentCourse = course
-      console.log(this.chooseStudentCourse)
+      baseHandler(HandlerEnum.FULL_CONTENT, true);
     },
     exit() {
       this.chooseStudentCourse = {}
+      baseHandler(HandlerEnum.FULL_CONTENT, false);
+
     }
   }
 

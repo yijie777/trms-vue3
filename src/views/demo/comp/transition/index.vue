@@ -7,6 +7,9 @@
     <component :is="`${value}Transition`">
       <div class="box" v-show="show"></div>
     </component>
+    <ScaleTransition>
+      <div class="box" v-show="show"></div>
+    </ScaleTransition>
   </PageWrapper>
 </template>
 <script lang="ts">

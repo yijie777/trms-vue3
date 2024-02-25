@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div id="terminal" ref="terminal" v-if="restart"></div>
     <div id="terminal" ref="terminal" v-if="!restart"></div>
   </div>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       term: "", // 保存terminal实例
-      rows: 52,
+      rows: 63,
       cols: 50,
       stompClient: '',
       sshInfo: {},

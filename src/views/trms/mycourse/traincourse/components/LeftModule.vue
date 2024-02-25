@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div >
 
     <a-menu v-model:selectedKeys="current" mode="horizontal"
             @select="select"
-            style="padding-left: 30px"
-    >
+            style="padding-left: 30px" >
 
       <a-menu-item key="DocOP">
         <template #icon>
@@ -34,15 +33,14 @@
 
 
     </a-menu>
-    <ScrollContainer class="mt-4 doc-op" v-if="key==='DocOP'">
-      <template v-for="index in 1" :key="index">
-        <vue-office-docx class="scroll" v-if="this.docx!=''" :src="docx" @rendered="rendered"/>
-        <vue-office-pdf class="scroll" v-if="this.pdf!=''" :src="pdf" @rendered="rendered"/>
+    <ScrollContainer class="mt-4 doc-op" v-if="key==='DocOP'" style="height: 1080px">
+      <template v-for="index in 1" :key="index" >
+        <vue-office-docx class="scroll" v-if="this.docx!=''"  :src="docx" @rendered="rendered"/>
+        <vue-office-pdf class="scroll" v-if="this.pdf!=''"  :src="pdf" @rendered="rendered"/>
       </template>
     </ScrollContainer>
 
     <a-layout-content class="a-layout-content">
-
 
 
       <div v-if="key==='FastOrder'" class="order-op">
@@ -55,18 +53,18 @@
         </a-button>
         <a-alert message="SSH相关操作"/>
 
-        <a-button @click="createContainer" class="my-4 mr-2" size="large" type="primary" disabled>
-          创建HA
-        </a-button>
-        <a-button @click="oneClickDeployment" class="my-4 mr-2" size="large" type="primary">一键启动HA
-        </a-button>
-        <a-button @click="automaticCorrection" class="my-4 mr-2" size="large" type="primary">
-          检验组件是否启动
-        </a-button>
+        <!--        <a-button @click="" class="my-4 mr-2" size="large" type="primary" disabled>-->
+        <!--          创建HA-->
+        <!--        </a-button>-->
+        <!--        <a-button @click="oneClickDeployment" class="my-4 mr-2" size="large" type="primary">一键启动HA-->
+        <!--        </a-button>-->
+        <!--        <a-button @click="automaticCorrection" class="my-4 mr-2" size="large" type="primary">-->
+        <!--          检验组件是否启动-->
+        <!--        </a-button>-->
         <a-button @click="reconnect" class="my-4 mr-2" size="large" type="primary">重连</a-button>
       </div>
-      <div class="mt-4 " >
-        <ScrollContainer v-if="key==='ServerInfo'" >
+      <div class="mt-4 ">
+        <ScrollContainer v-if="key==='ServerInfo'">
           <template v-for="index in 1" :key="index">
             <ServerInfo v-for='containerInfo in containerList'
                         :key='containerInfo.id'
@@ -76,9 +74,15 @@
 
               <template v-slot:title>
                 <a-tag color="green">running</a-tag>
-                <a-button @click="startContainer(containerInfo)" class="a-button">连接</a-button>
-                <a-button @click="startContainer(containerInfo)" class="a-button">重置</a-button>
-                <a-button @click="startContainer(containerInfo)" class="a-button">重启</a-button>
+                <a-button @click="startContainer(containerInfo)" class="a-button a-button-connect">
+                  连接
+                </a-button>
+                <a-button @click="resetContainer(containerInfo)" class="a-button a-button-reset">
+                  重置
+                </a-button>
+                <a-button @click="restartContainer(containerInfo)"
+                          class="a-button a-button-restart">重启
+                </a-button>
               </template>
 
               <template v-slot:main>
@@ -100,10 +104,8 @@
 
 
       <div v-if="key==='Submit'" class="submit-op">
-        <JCodeEditor v-model:value="value" language="java" height="300px"></JCodeEditor>
-        <JUpload ref="uploadRef" v-model:value="uploadModalValue"/>
+        <JUpload ref="uploadRef"  @change="handleChange" />
         <a-button @click="submit" class="my-4 mr-2" size="large" type="primary">提交</a-button>
-
       </div>
 
 
@@ -118,7 +120,6 @@ import {defineComponent} from 'vue';
 import {MailOutlined, AppstoreOutlined, FullscreenExitOutlined} from '@ant-design/icons-vue';
 import ServerInfo from "@/views/trms/mycourse/traincourse/components/ServerInfo.vue";
 import {
-  createHA,
   oneClickDeployment,
   automaticCorrection,
 } from "@/views/demo/myRole/role.api";
@@ -133,6 +134,7 @@ import {BasicUpload} from "@/components/Upload";
 import JUpload from "@/components/Form/src/jeecg/components/JUpload/JUpload.vue";
 import {JUploadModal} from "@/components/Form/src/jeecg/components/JUpload";
 import JCodeEditor from "@/components/Form/src/jeecg/components/JCodeEditor.vue";
+import {restart, reset, edit} from "@/views/trms/mycourse/traincourse/TrainCourse.api";
 
 interface ContainerInfo {
   host: string;
@@ -167,8 +169,15 @@ export default defineComponent({
   },
   data() {
     return {
-      value: "",
-      uploadModalValue: "",
+      progress: {
+        strokeColor: {
+          '0%': '#108ee9',
+          '100%': '#87d068',
+        },
+        strokeWidth: 3,
+        format: percent => `${parseFloat(percent.toFixed(2))}%`,
+        class: 'test',
+      },
       current: ['ServerInfo'],
       containerList: Array<ContainerInfo>(),
       sshInfo: {
@@ -181,7 +190,10 @@ export default defineComponent({
       key: "ServerInfo",
       docx: '',
       pdf: '',
-      fileList: []
+      fileList: [],
+      headers: {
+        authorization: 'authorization-text',
+      },
     }
   },
   props: {
@@ -189,7 +201,6 @@ export default defineComponent({
   },
   mounted() {
     this.init()
-    console.log(this.containerList)
     if (this.sc.course.documentUrl.includes('docx')) {
       this.docx = getFileAccessHttpUrl(this.sc.course.documentUrl)
     } else if (this.sc.course.documentUrl.includes('pdf')) {
@@ -197,9 +208,11 @@ export default defineComponent({
     }
   },
   methods: {
+    handleChange(value) {
+      this.sc.uploadUrl=value
+    },
     submit() {
-      console.log(this.value)
-      console.log(this.uploadModalValue)
+      edit(this.sc)
     },
     handleDownByResource() {
       downloadByUrl({
@@ -216,13 +229,6 @@ export default defineComponent({
     rendered() {
       console.log("渲染完成")
     },
-    createContainer() {
-      createHA({
-        id: this.sc.studentId,
-        tag: "v3",
-        network: "100net"
-      })
-    },
 
     oneClickDeployment() {
       this.sshInfo.operate = "START_HA"
@@ -233,9 +239,14 @@ export default defineComponent({
       this.sshInfo.operate = "CHECK_HA_MASTER"
       automaticCorrection(this.sshInfo)
     },
-
     reconnect() {
       this.$emit('initTerminal');
+    },
+    resetContainer(containerInfo) {
+      reset(containerInfo.name)
+    },
+    restartContainer(containerInfo) {
+      restart(containerInfo.name)
     },
     startContainer(containerInfo) {
       let useContainerStore1 = useContainerStore();
@@ -251,9 +262,7 @@ export default defineComponent({
       this.key = e.key
     },
     init() {
-      console.log(this.sc.id)
       for (const recordsKey in this.sc.docker) {
-
         let portBind = {}
         let public_22 = "22"
         let portBinds = this.sc.docker[recordsKey].HostConfig.PortBindings
@@ -264,14 +273,14 @@ export default defineComponent({
             public_22 = portBinds[key][0]['HostPort']
           }
         }
-
         this.containerList.push({
-          host: '192.168.160.100',
+          host: import.meta.env.VITE_GLOB_DOCKER,
           // host: '101.35.193.165',
           username: 'root',
           password: '123456',
-          id: this.sc.studentId,
+          id: this.sc.id,
           port: public_22,
+          name: this.sc.docker[recordsKey].Name,
           hostname: this.sc.docker[recordsKey].Config.Hostname,
           status: this.sc.docker[recordsKey].State.Status,
           portBindings: portBind,
@@ -335,6 +344,24 @@ export default defineComponent({
   border-radius: 4px;
   font-weight: bold; /* 加粗文字 */
   margin-right: 5px;
+}
+
+/* 第一个按钮的特定样式 */
+.a-button-connect {
+  background-color: #4CAF50; /* 绿色 */
+  color: white;
+}
+
+/* 第二个按钮的特定样式 */
+.a-button-reset {
+  background-color: #ce4338; /* 红色 */
+  color: white;
+}
+
+/* 第三个按钮的特定样式 */
+.a-button-restart {
+  background-color: #59b3e3; /* 蓝色 */
+  color: white;
 }
 
 /* 列表项样式 */
